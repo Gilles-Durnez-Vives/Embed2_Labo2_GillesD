@@ -63,10 +63,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/pi/School/Embed/EmbedSys2-GD/Labo2_GillesD/CGI
+CMAKE_SOURCE_DIR = /home/pi/School/Embed/Labo/Labo2/Embed2_Labo2_GillesD/Labo2_GillesD/CGI
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/pi/School/Embed/EmbedSys2-GD/Labo2_GillesD/CGI/build
+CMAKE_BINARY_DIR = /home/pi/School/Embed/Labo/Labo2/Embed2_Labo2_GillesD/Labo2_GillesD/CGI/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -93,14 +93,14 @@ clean: CMakeFiles/Labo2.dir/clean
 CMakeFiles/Labo2.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Labo2.dir/build.make CMakeFiles/Labo2.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Labo2.dir/build.make CMakeFiles/Labo2.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/pi/School/Embed/EmbedSys2-GD/Labo2_GillesD/CGI/build/CMakeFiles --progress-num=1,2 "Built target Labo2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/pi/School/Embed/Labo/Labo2/Embed2_Labo2_GillesD/Labo2_GillesD/CGI/build/CMakeFiles --progress-num=1,2 "Built target Labo2"
 .PHONY : CMakeFiles/Labo2.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Labo2.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/School/Embed/EmbedSys2-GD/Labo2_GillesD/CGI/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/School/Embed/Labo/Labo2/Embed2_Labo2_GillesD/Labo2_GillesD/CGI/build/CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Labo2.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/School/Embed/EmbedSys2-GD/Labo2_GillesD/CGI/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/School/Embed/Labo/Labo2/Embed2_Labo2_GillesD/Labo2_GillesD/CGI/build/CMakeFiles 0
 .PHONY : CMakeFiles/Labo2.dir/rule
 
 # Convenience name for target.

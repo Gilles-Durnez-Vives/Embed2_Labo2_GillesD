@@ -1,4 +1,4 @@
-# Install script for directory: /home/pi/School/Embed/EmbedSys2-GD/Labo2_GillesD/CGI
+# Install script for directory: /home/pi/School/Embed/Labo/Labo2/Embed2_Labo2_GillesD/Labo2_GillesD/CGI
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/pi/School/Embed/EmbedSys2-GD/Labo2_GillesD/CGI/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/pi/School/Embed/Labo/Labo2/Embed2_Labo2_GillesD/Labo2_GillesD/CGI/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

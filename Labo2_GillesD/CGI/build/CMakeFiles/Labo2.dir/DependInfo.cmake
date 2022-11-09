@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/pi/School/Embed/EmbedSys2-GD/Labo2_GillesD/CGI/cgi.c" "/home/pi/School/Embed/EmbedSys2-GD/Labo2_GillesD/CGI/build/CMakeFiles/Labo2.dir/cgi.c.o"
+  "/home/pi/School/Embed/Labo/Labo2/Embed2_Labo2_GillesD/Labo2_GillesD/CGI/cgi.c" "/home/pi/School/Embed/Labo/Labo2/Embed2_Labo2_GillesD/Labo2_GillesD/CGI/build/CMakeFiles/Labo2.dir/cgi.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
