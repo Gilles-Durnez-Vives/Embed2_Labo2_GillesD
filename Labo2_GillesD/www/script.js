@@ -9,12 +9,15 @@ window.addEventListener("load", ()=>{
             var newRow = document.createElement("tr");
             var comCel = document.createElement("td");
             var timCel = document.createElement("td");
+            var usrCel = document.createElement("td");
 
-            comCel.innerText = element[0];
-            timCel.innerText = element[1];
-
-            newRow.appendChild(comCel);
+            timCel.innerText = element[0];
+            usrCel.innerText = element[1];
+            comCel.innerText = element[2];
+            
             newRow.appendChild(timCel);
+            newRow.appendChild(usrCel);
+            newRow.appendChild(comCel);
 
             table.appendChild(newRow);
         });

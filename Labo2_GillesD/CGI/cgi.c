@@ -45,6 +45,11 @@ int main()
   FILE *JsonFile;
   char JsonBuffer[MAXINPUT+12] = "";
 
+  MYSQL *con = mysql_init(NULL);
+  MYSQL_RES* result;
+  MYSQL_ROW row;
+  char queryString [170];
+
   struct tm *timeinfo ;
   time_t rawtime ;
   char currentTime [128];
@@ -55,6 +60,20 @@ int main()
   lenstr = getenv("CONTENT_LENGTH");
   cookie = getenv("HTTP_COOKIE");
   cookieData = cookie+12;             // 12 voor "usernameCGI=" (cookie name)
+
+  // Initialise MySQL DB
+  if (con == NULL)
+	{
+		fprintf(stderr, "%s\n", mysql_error(con));
+		exit(1);
+	}
+
+	if (mysql_real_connect(con, "localhost", "labo2GillesDurnez", "labo2GillesDurnezPW", "labo2GD", 0, NULL, 0) == NULL)
+	{
+		fprintf(stderr, "%s\n", mysql_error(con));
+		mysql_close(con);
+		exit(1);
+	}
   
   if(lenstr == NULL || sscanf(lenstr,"%ld",&len)!=1 || len > MAXLEN)
     printf("<P>Error in invocation - wrong FORM probably.");
@@ -83,7 +102,43 @@ int main()
       sprintf(JsonBuffer, ",[\"%s\",\"%s\"]]}", data, currentTime);
       fseek(JsonFile, -2, SEEK_END);
     }
+
     fputs(JsonBuffer, JsonFile);
+    fclose(JsonFile);
+  	
+    // Push new data to DB
+    sprintf(queryString,"INSERT INTO comments (time, username, comment) VALUES('%s','%s','%s');",cookieData,data,currentTime);
+    if (mysql_query(con, queryString))
+    {
+      fprintf(stderr, "%s\n", mysql_error(con));
+      mysql_close(con);
+      exit(1);
+    }
+
+    // Get All data from DB to json file.
+    char sqlBuffer [20000] = "{\"Comments\":[";
+    char rowBuffer [200];
+    int count = 0;
+    mysql_query(con, "SELECT * FROM comments");
+    result = mysql_store_result(con);
+    while((row = mysql_fetch_row(result)))
+    {
+      if(count == 1)
+      {
+        sprintf(rowBuffer,",[\"%s\",\"%s\",\"%s\"]",row[0],row[1],row[2]);
+      }
+      else
+      {
+        sprintf(rowBuffer,"[\"%s\",\"%s\",\"%s\"]",row[0],row[1],row[2]);
+        count++;
+      }
+      strcat(sqlBuffer,rowBuffer);
+    }
+    strcat(sqlBuffer,"]}");
+    JsonFile = fopen("/var/www/html/data.json", "w");
+    fseek(JsonFile, 0, SEEK_SET);
+
+    fputs(sqlBuffer, JsonFile);
     fclose(JsonFile);
 
     printf("<P>Thank you! The following contribution of yours has been stored:<BR><p>%s</p>",data);
