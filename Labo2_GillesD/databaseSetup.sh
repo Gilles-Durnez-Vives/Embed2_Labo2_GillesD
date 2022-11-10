@@ -1,3 +1,4 @@
+sudo mariadb
 sudo mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS labo2GD;"
 sudo mysql -u root -e "CREATE USER IF NOT EXISTS 'labo2GillesDurnez'@'localhost' IDENTIFIED BY 'labo2GillesDurnezPW';"
 sudo mysql -u root -e "USE labo2GD;"

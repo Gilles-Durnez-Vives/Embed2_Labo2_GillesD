@@ -113,7 +113,7 @@ int main()
   	
     /////////////////////////////////////////////////////
     // Push new data to DB
-    sprintf(queryString,"INSERT INTO comments (time, username, comment) VALUES('%s','%s','%s');",cookieData,data,currentTime);
+    sprintf(queryString,"INSERT INTO comments (time, username, comment) VALUES('%s','%s','%s');",currentTime,cookieData,data);
     if (mysql_query(con, queryString))
     {
       fprintf(stderr, "%s\n", mysql_error(con));
