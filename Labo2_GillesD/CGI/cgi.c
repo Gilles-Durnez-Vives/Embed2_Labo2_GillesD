@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <mysql.h>
 
+// Start van uitbreiding
+
 #define MAXLEN 150
 #define EXTRA 10                       /* 9 for field name "data", 1 for "="  --> 10*/
 #define MAXINPUT MAXLEN+EXTRA+2
