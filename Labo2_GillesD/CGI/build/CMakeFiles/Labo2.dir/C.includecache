@@ -13,6 +13,10 @@ string.h
 -
 stdlib.h
 -
+sys/time.h
+-
+time.h
+-
 unistd.h
 -
 mysql.h

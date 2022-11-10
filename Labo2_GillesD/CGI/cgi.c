@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/time.h>
+#include <time.h>
 #include <unistd.h>
 #include <mysql.h>
 
@@ -26,7 +28,7 @@ void unencode(char *src, char *last, char *dest)
         src +=2; }
     else
         *dest = *src;
-  *dest = '\n';
+  *dest = ' ';
   *++dest = '\0';
 }
 
@@ -35,6 +37,13 @@ int main()
   char *lenstr;
   char input[MAXINPUT], data[MAXINPUT];
   long len;
+
+  FILE *JsonFile;
+  char JsonBuffer[MAXINPUT+12] = "";
+
+  struct tm *timeinfo ;
+  time_t rawtime ;
+  char currentTime [128];
 
   print_http_header("text/html");
   printf("<TITLE>Response</TITLE>\n");
@@ -47,7 +56,20 @@ int main()
   {
     fgets(input, len+1, stdin);
     unencode(input+EXTRA, input+len, data);
-    printf("<P>Thank you! The following contribution of yours has been stored:<BR>%s",data);
+
+    // Get current time to add to file
+    rawtime = time (NULL) ;
+    timeinfo = localtime(&rawtime) ;  
+    strftime(currentTime,128,"%H:%M:%S %d-%b-%Y",timeinfo);
+
+    // Update the json file with the new comments.
+    JsonFile = fopen("/var/www/html/data.json", "r+");
+    sprintf(JsonBuffer, ",[\"%s\",\"%s\"]]}", data, currentTime);
+    fseek(JsonFile, -2, SEEK_END);
+    fputs(JsonBuffer, JsonFile);
+
+    printf("<P>Thank you! The following contribution of yours has been stored:<BR><p>%s</p>",data);
+    printf("<a href=\"#\" onclick=\"javascript:window.history.back(-1);return false;\">Return (please refresh page after return to see results)</a>");
   }
   return 0;
 }
