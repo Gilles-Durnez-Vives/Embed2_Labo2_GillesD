@@ -54,6 +54,7 @@ int main()
   time_t rawtime ;
   char currentTime [128];
 
+  // Print Header
   print_http_header("text/html");
   printf("<TITLE>Response</TITLE>\n");
 
@@ -87,17 +88,21 @@ int main()
     timeinfo = localtime(&rawtime) ;  
     strftime(currentTime,128,"%H:%M:%S %d-%b-%Y",timeinfo);
 
+    ////////////////////////////////////////////////////
     // Update the json file with the new comments.
     sprintf(JsonURL,"/var/www/html/%s.json",cookieData);
     
+    // Check if json exists
     if (access(JsonURL, F_OK) != 0)
     {
+      // json does not exist make framework
       JsonFile = fopen(JsonURL, "w");
       sprintf(JsonBuffer, "{\"Comments\":[[\"%s\",\"%s\"]]}", data, currentTime);
       fseek(JsonFile, 0, SEEK_SET);
     }
     else
     {
+      // json exists append to json
       JsonFile = fopen(JsonURL, "r+");
       sprintf(JsonBuffer, ",[\"%s\",\"%s\"]]}", data, currentTime);
       fseek(JsonFile, -2, SEEK_END);
@@ -106,6 +111,7 @@ int main()
     fputs(JsonBuffer, JsonFile);
     fclose(JsonFile);
   	
+    /////////////////////////////////////////////////////
     // Push new data to DB
     sprintf(queryString,"INSERT INTO comments (time, username, comment) VALUES('%s','%s','%s');",cookieData,data,currentTime);
     if (mysql_query(con, queryString))
@@ -119,21 +125,26 @@ int main()
     char sqlBuffer [20000] = "{\"Comments\":[";
     char rowBuffer [200];
     int count = 0;
+    // Get data from DB
     mysql_query(con, "SELECT * FROM comments");
     result = mysql_store_result(con);
     while((row = mysql_fetch_row(result)))
     {
+      // Chek for start of json
       if(count == 1)
       {
+        // append to json with ,
         sprintf(rowBuffer,",[\"%s\",\"%s\",\"%s\"]",row[0],row[1],row[2]);
       }
       else
       {
+        // Start of json no , needed
         sprintf(rowBuffer,"[\"%s\",\"%s\",\"%s\"]",row[0],row[1],row[2]);
         count++;
       }
       strcat(sqlBuffer,rowBuffer);
     }
+    // Close json and push to file
     strcat(sqlBuffer,"]}");
     JsonFile = fopen("/var/www/html/data.json", "w");
     fseek(JsonFile, 0, SEEK_SET);
