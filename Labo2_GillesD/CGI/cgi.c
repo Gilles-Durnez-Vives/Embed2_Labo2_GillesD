@@ -9,9 +9,8 @@
 // Start van uitbreiding
 
 #define MAXLEN 150
-#define EXTRA 10                       /* 9 for field name "data", 1 for "="  --> 10*/
+#define EXTRA 10                       /* 9 for field name "textToAdd", 1 for "="  --> 10*/
 #define MAXINPUT MAXLEN+EXTRA+2
-#define DATAFILE "../data/data.json"
 
 static void print_http_header (const char * content_type)
 {
@@ -37,6 +36,9 @@ void unencode(char *src, char *last, char *dest)
 int main()
 {
   char *lenstr;
+  char *cookie;
+  char* cookieData;
+  char JsonURL[30];
   char input[MAXINPUT], data[MAXINPUT];
   long len;
 
@@ -51,6 +53,8 @@ int main()
   printf("<TITLE>Response</TITLE>\n");
 
   lenstr = getenv("CONTENT_LENGTH");
+  cookie = getenv("HTTP_COOKIE");
+  cookieData = cookie+12;             // 12 voor "usernameCGI=" (cookie name)
   
   if(lenstr == NULL || sscanf(lenstr,"%ld",&len)!=1 || len > MAXLEN)
     printf("<P>Error in invocation - wrong FORM probably.");
@@ -65,10 +69,22 @@ int main()
     strftime(currentTime,128,"%H:%M:%S %d-%b-%Y",timeinfo);
 
     // Update the json file with the new comments.
-    JsonFile = fopen("/var/www/html/data.json", "r+");
-    sprintf(JsonBuffer, ",[\"%s\",\"%s\"]]}", data, currentTime);
-    fseek(JsonFile, -2, SEEK_END);
+    sprintf(JsonURL,"/var/www/html/%s.json",cookieData);
+    
+    if (access(JsonURL, F_OK) != 0)
+    {
+      JsonFile = fopen(JsonURL, "w");
+      sprintf(JsonBuffer, "{\"Comments\":[[\"%s\",\"%s\"]]}", data, currentTime);
+      fseek(JsonFile, 0, SEEK_SET);
+    }
+    else
+    {
+      JsonFile = fopen(JsonURL, "r+");
+      sprintf(JsonBuffer, ",[\"%s\",\"%s\"]]}", data, currentTime);
+      fseek(JsonFile, -2, SEEK_END);
+    }
     fputs(JsonBuffer, JsonFile);
+    fclose(JsonFile);
 
     printf("<P>Thank you! The following contribution of yours has been stored:<BR><p>%s</p>",data);
     printf("<a href=\"#\" onclick=\"javascript:window.history.back(-1);return false;\">Return (please refresh page after return to see results)</a>");
